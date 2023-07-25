@@ -1,3 +1,1 @@
-# Arquivo: ebpf/Dockerfile_ebpf
-# Especificar o Dockerfile de acordo com a solução eBPF específica
-# Certifique-se de que o ambiente suporta a execução de eBPF no kernel do container.
+
