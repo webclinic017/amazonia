@@ -1,2 +1,2 @@
 Flask==2.1.0
-bcc-python
+bcc-python==0.18.0
