@@ -1,8 +1,10 @@
-FROM python:3.9-slim
+FROM ubuntu:20.04
 
 RUN apt-get update && \
-    apt-get install -y bpfcc-tools libbpfcc
+    apt-get install -y bpfcc-tools python3-bpfcc
 
-COPY metrics_ebpf.py /app/metrics_ebpf.py
+WORKDIR /app
 
-CMD ["python", "/app/metrics_ebpf.py"]
+COPY metrics_ebpf.py .
+
+CMD ["python3", "metrics_ebpf.py"]
