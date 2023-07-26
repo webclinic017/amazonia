@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && \
-    apt-get install -y bpfcc-tools python3-bpfcc linux-headers-generic
+    apt-get install -y bpfcc-tools python3-bpfcc
 
 WORKDIR /app
 
