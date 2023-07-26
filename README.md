@@ -11,7 +11,7 @@ Apos o 'git clone'.
 
 Construa os containers Docker, navegando até o diretório do projeto
 
-$ cd nomedoprojeto
+$ cd amazonia
 
 Construa usando o comando abaixo:
 
