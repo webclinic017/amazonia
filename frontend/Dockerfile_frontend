@@ -1,4 +1,3 @@
-# Arquivo: frontend/Dockerfile_frontend
 FROM nginx:alpine
 
 COPY index.html /usr/share/nginx/html
