@@ -1,11 +1,8 @@
-FROM ubuntu:latest
+FROM python:3.9-slim
 
 RUN apt-get update && \
     apt-get install -y bpfcc-tools libbpfcc
 
-COPY metrics_ebpf.c /app/metrics_ebpf.c
+COPY metrics_ebpf.py /app/metrics_ebpf.py
 
-RUN cd /app && \
-    clang -O2 -target bpf -c metrics_ebpf.c -o metrics_ebpf.o
-
-CMD ["ip", "link", "set", "up", "dev", "lo", "&&", "bpftool", "prog", "load", "/app/metrics_ebpf.o", "/sys/fs/bpf/metrics_ebpf"]
+CMD ["python", "/app/metrics_ebpf.py"]
