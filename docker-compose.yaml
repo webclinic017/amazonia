@@ -22,3 +22,4 @@ services:
       context: ./ebpf
       dockerfile: Dockerfile_ebpf
     privileged: true
+    
