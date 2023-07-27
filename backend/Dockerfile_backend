@@ -1,17 +1,15 @@
-FROM ubuntu:20.04
+FROM python:3.9
 
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip clang llvm libbpfcc
-
-RUN apt-get install -y linux-headers-$(uname -r)
 
 WORKDIR /app
 
-COPY backend.py .
-COPY requirements.txt .
+COPY . /app
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apt-get update && apt-get install -y bpfcc-tools python3-bpfcc
+
 
 EXPOSE 5000
 
-CMD ["python3", "backend.py"]
+CMD ["python", "backend.py"]
