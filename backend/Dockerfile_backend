@@ -6,10 +6,7 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get update && apt-get install -y bpfcc-tools
-
-RUN cp -r /usr/share/bpfcc/include/bcc /usr/local/include/
-RUN cp -r /usr/lib/python3/dist-packages/bcc /usr/local/lib/python3.9/site-packages/
+RUN apt-get update && apt-get install -y libbpf-dev python3-bpfcc
 
 EXPOSE 5000
 
