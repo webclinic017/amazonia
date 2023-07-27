@@ -6,9 +6,8 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt-get update && apt-get install -y libbpf-dev python3-bpfcc
+RUN apt-get update && apt-get install -y libbpfcc libbpfcc-tools linux-headers-$(uname -r)
 
 EXPOSE 5000
 
 CMD ["python", "backend.py"]
-
