@@ -1,3 +1,4 @@
+
 FROM python:3.9
 
 WORKDIR /app
@@ -7,10 +8,10 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update && \
-    apt-get install -y libbpfcc libbpfcc-tools
-
-RUN apt-get install -y linux-headers-5.15.0-1036-aws
+    apt-get install -y libbpfcc libbpfcc-dev
 
 EXPOSE 5000
 
+
 CMD ["python", "backend.py"]
+
