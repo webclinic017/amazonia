@@ -1,13 +1,11 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && \
-    apt-get install -y bpfcc-tools python3-bpfcc
+    apt-get install -y bpfcc-tools python3
 
-WORKDIR /app
+COPY metrics_ebpf.py /app/metrics_ebpf.py
+COPY entrypoint.sh /app/entrypoint.sh
 
-COPY metrics_ebpf.py .
+RUN chmod +x /app/entrypoint.sh
 
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["/app/entrypoint.sh"]
