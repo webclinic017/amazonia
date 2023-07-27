@@ -7,4 +7,7 @@ WORKDIR /app
 
 COPY metrics_ebpf.py .
 
-CMD ["python3", "metrics_ebpf.py"]
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
