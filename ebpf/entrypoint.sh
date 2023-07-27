@@ -1,8 +1,7 @@
 #!/bin/bash
 
-DURATION_MINUTES=10
+bpftool prog load /app/metrics_ebpf.py /app/metrics_ebpf.o
 
-while true; do
-    python3 metrics_ebpf.py
-    sleep $((DURATION_MINUTES * 60))
-done
+bpftool cgroup attach /app/metrics_ebpf.o /sys/fs/cgroup/unified/ # Exemplo de anexar a cgroups
+
+tail -f /dev/null
