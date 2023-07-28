@@ -1,25 +1,26 @@
-from flask import Flask, jsonify, request
-from bcc import BPF
+from flask import Flask, jsonify
+import psutil
 
 app = Flask(__name__)
 
-bpf_code = """
-BPF_PROGRAM
-"""
-
-bpf = BPF(text=bpf_code)
-
-@app.route('/ebpf')
+@app.route('/ebpf', methods=['GET'])
 def get_ebpf_info():
 
+    open_ports = []
+    for conn in psutil.net_connections():
+        if conn.status == psutil.CONN_LISTEN:
+            open_ports.append(conn.laddr.port)
+
+    running_processes = []
+    for process in psutil.process_iter(['pid', 'name']):
+        running_processes.append({
+            'pid': process.info['pid'],
+            'name': process.info['name']
+        })
+
     data = {
-        "name": "My eBPF Module",
-        "description": "This is a sample eBPF module.",
-        "metrics": {
-            "metric1": "value1",
-            "metric2": "value2",
-            # Adicione outras métricas aqui
-        }
+        'open_ports': open_ports,
+        'running_processes': running_processes
     }
 
     return jsonify(data)
