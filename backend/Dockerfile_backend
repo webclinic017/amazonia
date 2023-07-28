@@ -8,6 +8,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && \
     apt-get install -y bpfcc-tools libbpfcc-dev
 
+RUN pip install bcc
+
 COPY . /app
 
 EXPOSE 5000
