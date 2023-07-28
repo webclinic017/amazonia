@@ -1,82 +1,72 @@
-<!-- frontend/index.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Amazonia Frontend</title>
+    <title>Projeto do Hudson Coutinho</title>
     <style>
         body {
+            background: linear-gradient(to bottom, #00ff00, #00cc00, #009900); /* Paleta de tons de verde */
             font-family: Arial, sans-serif;
-            background-color: #00ff00; /* Verde */
-            color: #ffffff; /* Branco */
+            margin: 0;
+            overflow: hidden; /* Esconder barras de rolagem */
         }
-        header {
-            background-color: #008000; /* Verde */
-            color: #ffffff; /* Branco */
-            padding: 10px;
-            text-align: center;
+        #airplane {
+            position: absolute;
+            top: 50%;
+            left: -100px;
+            animation: flyRight 10s linear infinite; /* Animação para o avião voar para a direita */
         }
-        h1 {
-            margin-top: 40px;
-            text-align: center;
+        @keyframes flyRight {
+            from { left: -100px; }
+            to { left: calc(100% + 100px); }
         }
-        #ebpf-info {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ffffff; /* Branco */
+        .icon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
         }
-        #brazil-flag {
-            width: 100px; /* Largura da bandeira */
-            margin: 0 auto; /* Centralizar na tela */
-            display: block;
+        #icon1 {
+            top: 100px;
+            left: 150px;
+            background-color: #ff0000; /* Vermelho */
         }
-        #letreiro {
-            text-align: center;
-            font-size: 24px;
+        #icon2 {
+            top: 250px;
+            left: 350px;
+            background-color: #0000ff; /* Azul */
+        }
+        #icon3 {
+            top: 400px;
+            left: 550px;
+            background-color: #ffff00; /* Amarelo */
+        }
+        #icon4 {
+            top: 550px;
+            left: 750px;
+            background-color: #ff00ff; /* Rosa */
+        }
+        .tail-banner {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff; /* Branco */
+            color: #000000; /* Preto */
+            padding: 5px;
             font-weight: bold;
-            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Amazonia</h1>
-        <p>Criado por Hudson Coutinho</p>
-    </header>
+    <!-- Ícones -->
+    <div id="icon1" class="icon"></div>
+    <div id="icon2" class="icon"></div>
+    <div id="icon3" class="icon"></div>
+    <div id="icon4" class="icon"></div>
 
-    <div id="brazil-flag">
-        <!-- Bandeira do Brasil -->
-        <img src="brazil-flag.png" alt="Bandeira do Brasil">
-    </div>
+    <!-- Avião -->
+    <img id="airplane" src="airplane.png" alt="Avião">
 
-    <div id="letreiro">
-        <!-- Letreiro -->
-        PROJETO DE eBPF DO HUDSON COUTINHO
-    </div>
-
-    <div id="ebpf-info">
-        <!-- Conteúdo do módulo eBPF será preenchido aqui -->
-    </div>
-
-    <script>
-        // Fazer uma solicitação GET para a rota /ebpf no backend e exibir as informações no frontend
-        fetch('/ebpf')
-            .then(response => response.json())
-            .then(data => {
-                // Exibir as informações do módulo eBPF no frontend
-                const ebpfInfoElement = document.getElementById('ebpf-info');
-                ebpfInfoElement.innerHTML = `
-                    <h2>${data.name}</h2>
-                    <p>${data.description}</p>
-                    <h3>Metrics:</h3>
-                    <ul>
-                        <li>Metric 1: ${data.metrics.metric1}</li>
-                        <li>Metric 2: ${data.metrics.metric2}</li>
-                        <!-- Adicione outras métricas aqui -->
-                    </ul>
-                `;
-            })
-            .catch(error => console.error('Error fetching eBPF info:', error));
-    </script>
+    <!-- Faixa na calda -->
+    <div class="tail-banner">Projeto do Hudson Coutinho</div>
 </body>
 </html>
