@@ -1,14 +1,9 @@
 FROM python:3.9
 
 RUN apt-get update && \
-    apt-get install -y bison build-essential cmake flex git libedit-dev llvm-10-dev libclang-10-dev python3-minimal zlib1g-dev libelf-dev
+    apt-get install -y bison build-essential cmake flex git libedit-dev zlib1g-dev libelf-dev
 
-RUN git clone https://github.com/iovisor/bcc.git /opt/bcc && \
-    mkdir -p /opt/bcc/build && \
-    cd /opt/bcc/build && \
-    cmake .. && \
-    make && \
-    make install
+RUN pip install --no-cache-dir llvmlite
 
 WORKDIR /app
 
@@ -19,5 +14,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 CMD ["python", "backend.py"]
-
-
