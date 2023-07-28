@@ -1,4 +1,3 @@
 flask
-bcc==0.20.0
 numba
 pytest
