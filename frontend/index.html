@@ -1,30 +1,10 @@
-<!-- frontend/index.html -->
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Amazonia Frontend</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #00ff00; /* Verde */
-            color: #ffffff; /* Branco */
-        }
-        header {
-            background-color: #008000; /* Verde */
-            color: #ffffff; /* Branco */
-            padding: 10px;
-            text-align: center;
-        }
-        h1 {
-            margin-top: 40px;
-            text-align: center;
-        }
-        #ebpf-info {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ffffff; /* Branco */
-        }
+  
     </style>
 </head>
 <body>
@@ -34,24 +14,24 @@
     </header>
 
     <div id="ebpf-info">
-        <!-- Conteúdo do módulo eBPF será preenchido aqui -->
+
     </div>
 
     <script>
-        // Fazer uma solicitação GET para a rota /ebpf no backend e exibir as informações no frontend
+
         fetch('/ebpf')
             .then(response => response.json())
             .then(data => {
-                // Exibir as informações do módulo eBPF no frontend
+                
                 const ebpfInfoElement = document.getElementById('ebpf-info');
                 ebpfInfoElement.innerHTML = `
-                    <h2>${data.name}</h2>
-                    <p>${data.description}</p>
-                    <h3>Metrics:</h3>
+                    <h2>Portas Abertas:</h2>
                     <ul>
-                        <li>Metric 1: ${data.metrics.metric1}</li>
-                        <li>Metric 2: ${data.metrics.metric2}</li>
-                        <!-- Adicione outras métricas aqui -->
+                        ${data.open_ports.map(port => `<li>${port}</li>`).join('')}
+                    </ul>
+                    <h2>Processos em Execução:</h2>
+                    <ul>
+                        ${data.running_processes.map(process => `<li>${process.pid}: ${process.name}</li>`).join('')}
                     </ul>
                 `;
             })
