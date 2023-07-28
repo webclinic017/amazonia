@@ -1,7 +1,7 @@
 FROM python:3.9
 
 RUN apt-get update && \
-    apt-get install -y -t bullseye bison build-essential cmake flex git libedit-dev llvm-12-dev libclang-12-dev python3-minimal zlib1g-dev libelf-dev
+    apt-get install -y bison build-essential cmake flex git libedit-dev llvm-10-dev libclang-10-dev python3-minimal zlib1g-dev libelf-dev
 
 RUN git clone https://github.com/iovisor/bcc.git /opt/bcc && \
     mkdir -p /opt/bcc/build && \
