@@ -5,7 +5,37 @@
 <head>
     <title>Amazonia Frontend</title>
     <style>
-        /* Estilos do frontend */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00ff00; /* Verde */
+            color: #ffffff; /* Branco */
+        }
+        header {
+            background-color: #008000; /* Verde */
+            color: #ffffff; /* Branco */
+            padding: 10px;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 40px;
+            text-align: center;
+        }
+        #ebpf-info {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ffffff; /* Branco */
+        }
+        #brazil-flag {
+            width: 100px; /* Largura da bandeira */
+            margin: 0 auto; /* Centralizar na tela */
+            display: block;
+        }
+        #letreiro {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
@@ -14,13 +44,18 @@
         <p>Criado por Hudson Coutinho</p>
     </header>
 
+    <div id="brazil-flag">
+        <!-- Bandeira do Brasil -->
+        <img src="brazil-flag.png" alt="Bandeira do Brasil">
+    </div>
+
+    <div id="letreiro">
+        <!-- Letreiro -->
+        PROJETO DE eBPF DO HUDSON COUTINHO
+    </div>
+
     <div id="ebpf-info">
-        <div id="open-ports-info">
-            <!-- As informações de portas abertas serão preenchidas aqui -->
-        </div>
-        <div id="running-processes-info">
-            <!-- As informações de processos em execução serão preenchidas aqui -->
-        </div>
+        <!-- Conteúdo do módulo eBPF será preenchido aqui -->
     </div>
 
     <script>
@@ -28,21 +63,16 @@
         fetch('/ebpf')
             .then(response => response.json())
             .then(data => {
-                // Exibir as informações de portas abertas no frontend
-                const openPortsElement = document.getElementById('open-ports-info');
-                openPortsElement.innerHTML = `
-                    <h2>Portas Abertas:</h2>
+                // Exibir as informações do módulo eBPF no frontend
+                const ebpfInfoElement = document.getElementById('ebpf-info');
+                ebpfInfoElement.innerHTML = `
+                    <h2>${data.name}</h2>
+                    <p>${data.description}</p>
+                    <h3>Metrics:</h3>
                     <ul>
-                        ${data.open_ports.map(port => `<li>${port}</li>`).join('')}
-                    </ul>
-                `;
-
-                // Exibir as informações de processos em execução no frontend
-                const runningProcessesElement = document.getElementById('running-processes-info');
-                runningProcessesElement.innerHTML = `
-                    <h2>Processos em Execução:</h2>
-                    <ul>
-                        ${data.running_processes.map(process => `<li>${process.pid}: ${process.name}</li>`).join('')}
+                        <li>Metric 1: ${data.metrics.metric1}</li>
+                        <li>Metric 2: ${data.metrics.metric2}</li>
+                        <!-- Adicione outras métricas aqui -->
                     </ul>
                 `;
             })
