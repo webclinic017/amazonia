@@ -4,6 +4,21 @@ Projeto sobre uma aplicação baseada na tecnologia eBPF.
 
 @hudsoncoutinhoo
 
+estrutura:
+
+project
+├── ebpf
+│   ├── Dockerfile_ebpf
+│   ├── metrics_ebpf.py
+│   └── requirements.txt
+├── backend
+│   ├── Dockerfile_backend
+│   └── backend.py
+├── frontend
+│   ├── Dockerfile_frontend
+│   └── frontend.py
+└── docker-compose.yml
+
 
 
 
