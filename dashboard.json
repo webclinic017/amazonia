@@ -1,0 +1,123 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": null,
+    "title": "eBPF Metrics Dashboard",
+    "tags": ["eBPF"],
+    "timezone": "browser",
+    "schemaVersion": 21,
+    "version": 0,
+    "refresh": "5s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "Backend Data Source", // Substitua pelo nome da fonte de dados configurada no Grafana para se conectar ao backend
+        "fill": 1,
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "percentage": false,
+        "pluginVersion": "7.5.3",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[1m])",
+            "intervalFactor": 2,
+            "legendFormat": "HTTP Requests",
+            "refId": "A"
+          },
+          {
+            "expr": "process_cpu_seconds_total{mode=\"user\"}",
+            "intervalFactor": 2,
+            "legendFormat": "Process CPU User",
+            "refId": "B"
+          },
+          {
+            "expr": "process_cpu_seconds_total{mode=\"system\"}",
+            "intervalFactor": 2,
+            "legendFormat": "Process CPU System",
+            "refId": "C"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Metrics",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "schema": [],
+    "annotations": {
+      "list": []
+    },
+    "templating": {
+      "list": []
+    },
+    "gnetId": null
+  },
+  "folderId": null,
+  "overwrite": false
+}
