@@ -9,6 +9,8 @@ services:
       - "5000:5000"
     depends_on:
       - ebpf
+    volumes:
+      - grafana_data:/app/data
 
   frontend:
     build:
@@ -17,7 +19,8 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - grafana
+      - ebpf
+      - backend
 
   ebpf:
     build:
@@ -26,8 +29,7 @@ services:
     privileged: true
 
   grafana:
-    image: grafana/grafana
-    container_name: grafana
+    image: grafana/grafana:latest
     ports:
       - "3000:3000"
     volumes:
