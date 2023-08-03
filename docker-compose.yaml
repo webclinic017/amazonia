@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile_backend
     ports:
       - "5000:5000"
-    depends_on:
-      - ebpf
 
   frontend:
     build:
@@ -25,13 +23,14 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
     ports:
       - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
     depends_on:
       - backend
+      - ebpf
 
 volumes:
   grafana_data:
