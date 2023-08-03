@@ -7,17 +7,29 @@ Projeto sobre uma aplicação baseada na tecnologia eBPF.
 estrutura:
 
 project
-├── ebpf
-│   ├── Dockerfile_ebpf
-│   ├── metrics_ebpf.py
-│   └── requirements.txt
 ├── backend
 │   ├── Dockerfile_backend
-│   └── backend.py
+│   ├── backend.py
+│   └── requirements.txt
+├── ebpf
+│   ├── Dockerfile_ebpf
+│   ├── entrypoint.sh
+│   ├── metrics_ebpf.py
 ├── frontend
 │   ├── Dockerfile_frontend
-│   └── frontend.py
-└── docker-compose.yml
+│   ├── index.html
+│   └── nginx.conf
+├── charts
+│   └── myapp
+│       ├── templates
+│       │   ├── backend.yaml
+│       │   ├── ebpf.yaml
+│       │   ├── frontend.yaml
+│       │   └── grafana.yaml
+│       ├── values.yaml
+│       └── Chart.yaml
+└── dashboard.json
+
 
 
 
