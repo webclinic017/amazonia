@@ -1,12 +1,7 @@
 FROM python:3.9-slim
 
-RUN apt-get update && apt-get install -y libbcc python3-bcc
-
 WORKDIR /app
 
-COPY backend.py /app/backend.py
-
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/backend.py .
 
 CMD ["python", "backend.py"]
