@@ -1,15 +1,13 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && \
-    apt-get install -y bpfcc-tools python3-bpfcc linux-headers-generic
+    apt-get install -y bpfcc-tools python3-bpfcc linux-headers-generic python3-pip
 
 COPY metrics_ebpf.py /app/metrics_ebpf.py
 COPY requirements.txt /app/requirements.txt
 
-RUN apt-get install -y python3-pip
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
 WORKDIR /app
-
 
 CMD ["python3", "metrics_ebpf.py"]
