@@ -1,42 +1,113 @@
-import time
 from bcc import BPF
-from bcc.utils import printb
+import socket
 
+# Endereço e porta do backend para onde as métricas serão enviadas
+BACKEND_HOST = "localhost"
+BACKEND_PORT = 8080
+
+bpf_code_processes = """
+#include <linux/bpf.h>
+#include <linux/ptrace.h>
+#include <linux/sched.h>
+#include <linux/net.h>
+#include <uapi/linux/ptrace.h>
+
+struct data_t {
+    u64 pid;
+    char comm[TASK_COMM_LEN];
+    u64 cpu_usage;
+    u64 memory_usage;
+    u64 rx_bytes;
+    u64 tx_bytes;
+    u32 local_port;
+};
+
+BPF_PERF_OUTPUT(events);
+
+int trace_process(struct pt_regs *ctx) {
+    // Implemente o código para monitorar processos e coletar os dados relevantes
+    // Exemplo:
+    struct data_t data = {};
+    struct task_struct *task = (struct task_struct *)bpf_get_current_task();
+    data.pid = task->tgid;
+    bpf_get_current_comm(&data.comm, sizeof(data.comm));
+    data.cpu_usage = bpf_ktime_get_ns();
+    data.memory_usage = task->mm ? task->mm->total_vm << (PAGE_SHIFT - 10) : 0;
+
+    events.perf_submit(ctx, &data, sizeof(data));
+    return 0;
+}
+"""
+
+bpf_code_ports = """
+#include <linux/bpf.h>
+#include <linux/if_ether.h>
+#include <linux/ip.h>
+#include <linux/tcp.h>
+#include <uapi/linux/ptrace.h>
+
+struct data_t {
+    u64 pid;
+    u16 dport;
+    int ret;
+};
+
+BPF_PERF_OUTPUT(events);
+
+int trace_socket(struct pt_regs *ctx, struct socket *sock) {
+    // Implemente o código para monitorar portas e coletar os dados relevantes
+    // Exemplo:
+    struct data_t data = {};
+    data.pid = bpf_get_current_pid_tgid();
+
+    struct sockaddr_in *addr = (struct sockaddr_in *)PT_REGS_PARM2(ctx);
+    data.dport = addr->sin_port;
+    
+    events.perf_submit(ctx, &data, sizeof(data));
+    return 0;
+}
+"""
 
 def process_event(cpu, data, size):
+    # Processa o evento e coleta os dados
+    event = b["events"].event(data)
+    # ... (seu código para coletar os dados relevantes) ...
+
+    # Envia os dados coletados para o backend via socket
+    message = f"{data.pid},{data.comm},{data.cpu_usage},{data.memory_usage},{data.rx_bytes},{data.tx_bytes},{data.local_port}\n"
+    sock.sendall(message.encode())
 
 def ports_event(cpu, data, size):
+    # Processa o evento e coleta os dados
+    event = b_ports["events"].event(data)
+    # ... (seu código para coletar os dados relevantes) ...
 
-b = BPF(text=ebpf_code_processes)
+    # Envia os dados coletados para o backend via socket
+    message = f"{data.pid},{data.dport},{data.ret}\n"
+    sock.sendall(message.encode())
+
+b = BPF(text=bpf_code_processes)
 b.attach_kprobe(event=b.get_syscall_fnname("execve"), fn_name="trace_process")
 
-b_ports = BPF(text=ebpf_code_ports)
+b_ports = BPF(text=bpf_code_ports)
 b_ports.attach_kprobe(event=b_ports.get_syscall_fnname("sys_connect"), fn_name="trace_socket")
 
-def monitor_processes_and_ports(duration_minutes):
-    iterations = 0
-    duration_seconds = duration_minutes * 60
+# Cria o socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    print("%-6s %-16s %-6s" % ("PID", "COMMAND", "TGID"))
-    b["events"].open_perf_buffer(process_event)
-    
-    print("\nPortas em uso:")
-    print("%-6s %-6s %-6s" % ("PID", "DPORT", "RET"))
-    b_ports["events"].open_perf_buffer(ports_event)
+# Conecta ao backend
+server_address = (BACKEND_HOST, BACKEND_PORT)
+sock.connect(server_address)
 
+# Infinite loop para manter o programa eBPF em execução
+try:
     while True:
-        try:
-            b.perf_buffer_poll()
-            b_ports.perf_buffer_poll()
+        b.perf_buffer_poll()
+        b_ports.perf_buffer_poll()
 
-            iterations += 1
-            if iterations * 10 >= duration_seconds:
-                break
-            
-            time.sleep(10)  
+except KeyboardInterrupt:
+    pass
 
-        except KeyboardInterrupt:
-            break
-
-if __name__ == "__main__":
-    monitor_processes_and_ports(duration_minutes=10)
+finally:
+    # Fecha o socket ao sair do loop
+    sock.close()
