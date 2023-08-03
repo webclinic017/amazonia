@@ -1,12 +1,13 @@
-FROM ubuntu:20.04
+FROM docker.io/library/ubuntu:20.04
 
 RUN apt-get update && apt-get install -y bpfcc-tools python3-bpfcc linux-headers-generic
 
 WORKDIR /app
 
+COPY ../backend/requirements.txt /app/
 COPY metrics_ebpf.py /app/
 COPY entrypoint.sh /app/
 
 RUN apt-get install -y python3-pip && pip3 install -r requirements.txt
 
-CMD [ "/bin/bash", "entrypoint.sh" ]
+ENTRYPOINT ["/app/entrypoint.sh"]
